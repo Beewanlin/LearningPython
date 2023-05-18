@@ -1,7 +1,8 @@
 """
 managers子模块封装了网络通信的细节，可以直接使用以实现分布式多进程
 """
-import random, time, queue
+import queue
+from multiprocessing import freeze_support
 from multiprocessing.managers import BaseManager
 
 # 第一步：建立2个队列
@@ -16,32 +17,50 @@ class QueueManager(BaseManager):
     pass
 
 
-QueueManager.register('get_task_queue', callable=lambda: task_queue)
-QueueManager.register('get_result_queue', callable=lambda: result_queue)
+def get_task_queue():
+    return task_queue
 
 
-# 第三步：绑定端口，初始化manager对象
-host = '127.0.0.1'
-port = 8001
-authkey = bytes('qiye')
-manager = QueueManager(address=(host, port), authkey=authkey)
+def get_result_queue():
+    return result_queue
 
 
-# 第四步：启动管理器，启动队列，监听通信
-manager.start()
+def test():
+    # 第二步：将队列注册到网络上
+    QueueManager.register('get_task_queue', callable=get_task_queue)
+    QueueManager.register('get_result_queue', callable=get_result_queue)
+
+    # 第三步：绑定端口，初始化manager对象
+    host = '127.0.0.1'
+    port = 8001
+    manager = QueueManager(address=(host, port), authkey=b'qiye')
+
+    # 第四步：启动管理器，启动队列，监听通信
+    manager.start()
+
+    # 第五步：通过管理实例的方法获得通过网络访问的queue对象
+    task = manager.get_task_queue()
+    result = manager.get_result_queue()
+
+    # 第六步：添加任务
+    for n in range(10):
+        task.put(n)
+        print('put task %s.' % n)
+    # 第七步：取结果
+    print('try get result.')
+    for i in range(11):
+        try:
+            r = result.get(timeout=10)
+            print('result is %s' % r)
+        except queue.Empty:
+            print('result queue is empty.')
+
+    # 最后一定要关闭，不然会报错管道未关闭
+    manager.shutdown()
+    print('master exit.')
 
 
-# 第五步：通过管理实例的方法获得通过网络访问的queue对象
-task = manager.get_task_queue()
-result = manager.get_result_queue()
-
-
-# 第六步：添加任务
-for url in ['ImageUrl_' + str(i) for i in range(10)]:
-    task_queue.put(url)
-    print('put task %s' % url)
-# 第七步：取结果
-print('try get result')
-for i in range(10):
-    print('result is %s' % result.get(timeout=10))
-manager.shutdown()
+if __name__ == '__main__':
+    freeze_support()
+    print('Start!')
+    test()
