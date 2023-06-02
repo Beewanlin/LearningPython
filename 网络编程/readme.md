@@ -12,14 +12,16 @@ Python的网络编程主要使用到两个模块：Socket模块 和 SocketServer
 
 socket函数：
 服务端：
-s.bind()
-s.listen()
-s.accept()
+s.bind(ip, port)  绑定ip和port
+s.listen(backlog)  TCP监听端口，最多阻塞backlog个连接数
+s.accept()   TCP接收客户端连接，返回（sock, addr）
 客户端：
 s.connect()
 公共：
-s.recv()
-s.send()
+s.recv(bufsize[,flag]) 接收TCP数据
+s.recvfrom(bufsize[,flag]) 接收UDP数据
+s.send(string[,flag])  发送TCP数据
+s.sendto(string[,flag],address)  发送UDP数据
 s.close()
 s.settimeout(timeout)
 
