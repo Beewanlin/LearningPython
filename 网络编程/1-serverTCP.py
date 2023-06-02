@@ -8,12 +8,7 @@ accpet方法是在listen方法（监听）后调用的，用来等待与客户�
 sock具有2个方法，分别为send和recv。send参数为要发送的字符串，recv参数指的是接收的最大字节数（一般设置为1024，因为以太网的MTU为1500，不能设置的过大）
 所以recv时需要循环接收缓冲区的消息并拼接。
 
-
-
-
 """
-
-
 
 import socket
 import threading
@@ -27,7 +22,7 @@ def dealClient(sock, addr):
     while True:
         data = sock.recv(1024)
         time.sleep(1)
-        if not data or data.decode('utf-8')=='exit':
+        if not data or data.decode('utf-8') == 'exit':
             break
         print("-->>%s!" % data.decode('utf-8'))
         sock.send(('Loop_Msg: %s!' % data.decode('utf-8')).encode('utf-8'))
@@ -48,4 +43,3 @@ if __name__ == '__main__':
         sock, addr = s.accept()
         t = threading.Thread(target=dealClient, args=(sock, addr))
         t.start()
-
