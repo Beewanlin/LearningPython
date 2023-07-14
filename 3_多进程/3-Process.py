@@ -1,5 +1,5 @@
 """
-多进程，os模块中的fork方法可以实现，但一般使用multiprocessing模块的Process类来动态地创建多进程。
+3_多进程，os模块中的fork方法可以实现，但一般使用multiprocessing模块的Process类来动态地创建多进程。
 Process 参数为 待执行函数 和 函数参数；start()方法启动进程，join()方法进行进程间同步。
 """
 from multiprocessing import Process
