@@ -4,9 +4,9 @@ import urllib.request
 # 获取网站cookie
 # 声明一个CookieJar对象实例来保存cookie
 cookie = http.cookiejar.CookieJar()
-# 利用HTTPCookieProcessor来构建一个Handler
+# 利用HTTPCookieProcessor来构建一个Handler，作为cookie处理器
 handler = urllib.request.HTTPCookieProcessor(cookie)
-# 利用build_opener()方法构建出Opener
+# 通过handler构建Opener
 opener = urllib.request.build_opener(handler)
 
 
