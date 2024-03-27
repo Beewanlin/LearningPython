@@ -74,5 +74,32 @@ print(result9)
 
 
 """
-
+match对象的属性和方法。
+属性包括：
+方法包括：
+group() 获得1个或多个分组截获的字符串。无参数时返回全部结果，参数为整数1、2、...表示指定第几个分组截获的字符串，0表示整个结果。
+groups() 
+groupdict()
+start()
+end()
+span()
+expand(template)
 """
+
+pattern = re.compile(r'(\w+) (\w+) (?P<word>.*)')
+match = pattern.match('I Love Chocolate')
+
+print("match.string:", match.string)
+print("match.re:", match.re)
+print("match.pos:", match.pos)
+print("match.endpos:", match.endpos)
+print("match.lastindex:", match.lastindex)
+print("match.lastgroup:", match.lastgroup)
+
+print("match.group(1,2):", match.group(1, 2))
+print("match.groups():", match.groups())
+print("match.groupdict():", match.groupdict())
+print("match.start(2):", match.start(2))
+print("match.end(2):", match.end(2))
+print("match.span(2):", match.span(2))
+print(r"match.expand(r'\2 \1 \3'):", match.expand(r'\2 \1 \3'))

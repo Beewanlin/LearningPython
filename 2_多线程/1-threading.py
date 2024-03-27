@@ -1,5 +1,6 @@
 """
-Python中由于CLI锁的存在，多进程里一个进程只能执行一个线程，因此即使是多核CPU，python的多线程也并不能被实现。
+Python中由于CLI锁的存在，用于保护python对象和内存管理机制，以防止多个线程同时访问和修改Python解释器的内部状态。
+因此即使是多核CPU，多进程里一个进程只能执行一个线程，python的多线程也并不能被实现。
 两种实现方式：1）创建threading.Thread类实例，传参 target,name,args；再用start启动线程；
 2）继承threading.Thread类，重写threading.Thread类的init方法和run方法
 """
